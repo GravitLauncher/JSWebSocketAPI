@@ -1,0 +1,23 @@
+{
+  "name": "gravit-api",
+  "version": "0.1.0",
+  "description": "JS Api for GravitLauncher",
+  "main": "api.js",
+  "scripts": {
+    "test": "node node-test.js"
+  },
+  "author": "JoCat",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoCat/gravit-api.git"
+  },
+  "keywords": [
+    "gravitlauncher"
+  ],
+  "bugs": {
+    "url": "https://github.com/JoCat/gravit-api/issues"
+  },
+  "homepage": "https://github.com/JoCat/gravit-api#readme",
+  "dependencies": {}
+}
