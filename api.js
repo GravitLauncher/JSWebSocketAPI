@@ -1,11 +1,8 @@
 class GravitApi {
-
     /* Values */
-
     requestMap = new Map();
 
     /* Methods */
-
     connect(url) {
         this.socket = new WebSocket(url);
         this.socket.onopen = this.onOpen;
@@ -50,7 +47,7 @@ class GravitApi {
         if (e.code === 1006) console.error('Разрыв соединения');
         else {
             console.error('Неизвестная ошибка');
-            console.dir(event);
+            console.dir(e);
         }
     }
 
