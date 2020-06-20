@@ -1,12 +1,22 @@
 const path = require('path');
 
-module.exports = {
+const mode = [{
     mode: 'production',
-    devtool: 'source-map',
-    target: 'web',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'gravit-api.js',
-        library: 'GravitApi',
+    filename: 'gravit-api.min.js',
+},{
+    mode: 'development',
+    filename: 'gravit-api.js',
+}]
+
+module.exports = mode.map(c => {
+    return {
+        mode: c.mode,
+        devtool: 'source-map',
+        target: 'web',
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: c.filename,
+            library: 'GravitApi',
+        }
     }
-};
+})
