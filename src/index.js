@@ -1,15 +1,19 @@
-class GravitApi {
-    /* Values */
-    requestMap = new Map();
+'use strict';
+const WebSocket = require('isomorphic-ws');
+const getRandomValues = require('get-random-values');
 
-    /* Methods */
+module.exports = class GravitApi {
+    constructor() {
+        this.requestMap = new Map();
+    }
+
     connect(url) {
         this.socket = new WebSocket(url);
         this.socket.onopen = this.onOpen;
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
         this.socket.onerror = this.onError;
-        this.socket.GravitApi = this; // Так надо, смотри строку 59
+        this.socket.GravitApi = this; // Так надо, смотри строку 60
     }
 
     close() {
@@ -33,7 +37,7 @@ class GravitApi {
 
     genRandUUIDv4() {
         return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            (c ^ getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
     }
 
@@ -41,7 +45,7 @@ class GravitApi {
     onOpen() {
         console.log('Соединение установлено');
     }
-    
+
     onClose(e) {
         if (e.wasClean) return console.log('Соединение закрыто');
         if (e.code === 1006) console.error('Разрыв соединения');

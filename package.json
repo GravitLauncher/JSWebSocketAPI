@@ -1,10 +1,13 @@
 {
   "name": "gravit-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "JS Api for GravitLauncher",
-  "main": "api.js",
+  "main": "./src/index.js",
+  "browser": "./dist/gravit-api.js",
   "scripts": {
-    "test": "node node-test.js"
+    "test": "node example/node-example.js",
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
   "author": "JoCat",
   "license": "MIT",
@@ -19,5 +22,13 @@
     "url": "https://github.com/JoCat/gravit-api/issues"
   },
   "homepage": "https://github.com/JoCat/gravit-api#readme",
-  "dependencies": {}
+  "dependencies": {
+    "get-random-values": "^1.2.0",
+    "isomorphic-ws": "^4.0.1",
+    "ws": "^7.3.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
 }
