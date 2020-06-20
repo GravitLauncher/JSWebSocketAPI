@@ -242,7 +242,7 @@ module.exports = class GravitApi {
 
     close() {
         this.socket.close();
-    };
+    }
 
     sendRequest(type, obj, callback, errorCallback) {
         obj.type = type;
@@ -270,12 +270,12 @@ module.exports = class GravitApi {
         console.log('Соединение установлено');
     }
 
-    onClose(e) {
-        if (e.wasClean) return console.log('Соединение закрыто');
-        if (e.code === 1006) console.error('Разрыв соединения');
+    onClose(event) {
+        if (event.wasClean) return console.log('Соединение закрыто');
+        if (event.code === 1006) console.error('Разрыв соединения');
         else {
             console.error('Неизвестная ошибка');
-            console.dir(e);
+            console.dir(event);
         }
     }
 
