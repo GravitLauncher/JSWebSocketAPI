@@ -1,7 +1,7 @@
 {
   "name": "gravit-api",
-  "version": "0.2.0",
-  "description": "JS Api for GravitLauncher",
+  "version": "0.2.1",
+  "description": "JS API implementation for GravitLauncher",
   "main": "./src/index.js",
   "browser": "./dist/gravit-api.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "webpack",
     "watch": "webpack --watch"
   },
-  "author": "JoCat",
+  "author": "Andrew Molchanov <mr.catmanrus@gmail.com> (https://jocat.ru/)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,5 +30,8 @@
   "devDependencies": {
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
+  },
+  "directories": {
+    "example": "example"
   }
 }

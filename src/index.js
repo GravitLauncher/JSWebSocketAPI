@@ -1,4 +1,3 @@
-'use strict';
 const WebSocket = require('isomorphic-ws');
 const getRandomValues = require('get-random-values');
 
@@ -13,7 +12,7 @@ module.exports = class GravitApi {
         this.socket.onclose = this.onClose;
         this.socket.onmessage = this.onMessage;
         this.socket.onerror = this.onError;
-        this.socket.GravitApi = this; // Так надо, смотри строку 60
+        this.socket.GravitApi = this;
     }
 
     close() {
@@ -57,7 +56,6 @@ module.exports = class GravitApi {
 
     onMessage(event) {
         const obj = JSON.parse(event.data);
-        // this в данном контексте объект WebSocket
         const requestMap = this.GravitApi.requestMap;
 
         if (obj.requestUUID && requestMap.has(obj.requestUUID)) {
@@ -68,9 +66,7 @@ module.exports = class GravitApi {
         }
     }
 
-    onError(/*error*/) {
-        // TODO FIX а бывают вообще другие ошибки в контектсе вебсокета?)
+    onError() {
         console.error('Ошибка при подключеннии!');
-        //console.error(`Ошибка: ${error.message}`);
     }
 }
