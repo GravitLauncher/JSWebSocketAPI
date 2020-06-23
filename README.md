@@ -90,6 +90,7 @@ api.connect(wsUrl);
     * `callback` - функция выполняемая при успешном получении ответа от лаунчсервера
     * `errorCallback` - функция выполняемая при возврате лаунчсервером сообщения об ошибке
 * `genRandUUIDv4()` - генерация случайного UUID для запроса, используется в `sendRequest`
+* `checkValidRequestType(type)` - функция проверки указания валидного type для запроса, используется в `sendRequest`
 
 Эвенты (стандартные эвенты [вебсокета](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)):
 * `onOpen()` - обработчик эвента [onopen](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/onopen)
