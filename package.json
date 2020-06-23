@@ -1,11 +1,12 @@
 {
   "name": "gravit-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JS API implementation for GravitLauncher",
   "main": "./src/index.js",
   "browser": "./dist/gravit-api.js",
   "scripts": {
     "test": "node example/node-example.js",
+    "dev-test": "node dev-tests/node.js",
     "build": "webpack",
     "watch": "webpack --watch"
   },
