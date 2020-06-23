@@ -254,16 +254,13 @@ module.exports = class GravitApi {
     }
 
     sendRequest(type, obj, callback, errorCallback) {
+        if (!this.checkValidRequestType(type)) return console.error('Не валидный type');
         obj.type = type;
         obj.requestUUID = this.genRandUUIDv4();
         this.requestMap.set(obj.requestUUID, event => {
-            if (event.type == "error") {
-                if (errorCallback != undefined) errorCallback(event.error);
-            } else if (event.type == "exception") {
-                if (errorCallback != undefined) errorCallback(event.exception);
-            } else {
-                callback(event);
-            }
+            if (event.type == "error" || event.type == "exception")
+                if (errorCallback != undefined) errorCallback(event);
+            else callback(event);
         });
         this.socket.send(JSON.stringify(obj));
     }
@@ -272,6 +269,12 @@ module.exports = class GravitApi {
         return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
             (c ^ getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
+    }
+
+    checkValidRequestType(type) {
+        if (type == '' || type == undefined) return false;
+        if (isFinite(type)) return false; // Защита от дебилов?
+        return true;
     }
 
     /* Events */
@@ -291,12 +294,12 @@ module.exports = class GravitApi {
     onMessage(event) {
         const obj = JSON.parse(event.data);
         const requestMap = this.GravitApi.requestMap;
-
         if (obj.requestUUID && requestMap.has(obj.requestUUID)) {
             requestMap.get(obj.requestUUID)(obj);
             requestMap.delete(obj.requestUUID);
         } else {
-            console.dir(event);
+            if (obj.type == "error") console.error(obj.error);
+            else console.dir(obj);
         }
     }
 
