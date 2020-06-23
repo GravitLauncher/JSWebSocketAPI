@@ -17,6 +17,7 @@ module.exports = mode.map(c => {
             path: path.resolve(__dirname, 'dist'),
             filename: c.filename,
             library: 'GravitApi',
+            libraryTarget: 'umd'
         }
     }
 })
