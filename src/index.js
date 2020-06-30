@@ -27,6 +27,11 @@ module.exports = class GravitApi {
         this.socket.close();
     }
 
+    hasConnected() {
+        if (!this.socket) return false;
+        return this.socket.readyState === this.socket.OPEN;
+    }
+
     sendRequest(type, obj, callback, errorCallback) {
         if (!this.checkValidRequestType(type)) return console.error('Не валидный type');
         obj.type = type;
