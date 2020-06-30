@@ -9,12 +9,12 @@ const userdata = {
 
 // Api usage example
 const api = new GravitApi();
-api.onOpen = () => {
+api.connect(wsUrl)
+.then(() => {
     api.sendRequest('getAvailabilityAuth', {}, (auth) => {
-        console.log('Соединение установлено');
-        console.log(JSON.stringify(auth));
+        console.log(auth.list);
         auth = auth.list.pop();
-        console.log(`Выбран первый профиль авторизации: ${auth.name}`);
+        console.log(`Выбран первый профиль авторизации: ${auth.displayName}`);
         api.sendRequest('auth', {
             login: userdata.login,
             password: {
@@ -26,13 +26,13 @@ api.onOpen = () => {
             authType: "API",
             initProxy: false
         }, (res) => {
-            console.log(JSON.stringify(res));
+            console.log(res);
             api.close();
         }, (error) => {
-            console.log(JSON.stringify(error));
+            console.log(error);
         });
     }, (error) => {
-        console.log(JSON.stringify(error));
+        console.log(error);
     })
-}
-api.connect(wsUrl);
+})
+.catch(console.error);

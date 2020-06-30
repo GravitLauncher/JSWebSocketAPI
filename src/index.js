@@ -7,12 +7,20 @@ module.exports = class GravitApi {
     }
 
     connect(url) {
-        this.socket = new WebSocket(url);
-        this.socket.onopen = this.onOpen;
-        this.socket.onclose = this.onClose;
-        this.socket.onmessage = this.onMessage;
-        this.socket.onerror = this.onError;
-        this.socket.GravitApi = this;
+        return new Promise((resolve, reject) => {
+            this.socket = new WebSocket(url);
+            this.socket.onopen = () => {
+                resolve(this);
+                this.onOpen();
+            };
+            this.socket.onerror = (err) => {
+                reject(err);
+                this.onError();
+            };
+            this.socket.onclose = this.onClose;
+            this.socket.onmessage = this.onMessage;
+            this.socket.GravitApi = this;
+        });
     }
 
     close() {
@@ -39,7 +47,6 @@ module.exports = class GravitApi {
 
     checkValidRequestType(type) {
         if (type == '' || type == undefined) return false;
-        if (isFinite(type)) return false; // Защита от дебилов?
         return true;
     }
 

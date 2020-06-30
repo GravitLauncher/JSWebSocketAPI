@@ -42,33 +42,34 @@ const userdata = {
 // Инициализация класса API
 const api = new GravitApi();
 
-// Весь исполняемый код должен находится в теле функции GravitApi.onOpen
-api.onOpen = () => {
+api.connect(wsUrl) // Подключение к сокету лаунчсервера
+.then(() => {
     api.sendRequest('getAvailabilityAuth', {}, (auth) => { //Запрос списка методов авторизации
-        console.log('Соединение установлено');
-        auth = auth.list.pop(); // Выбор первого из списка
-        api.sendRequest('auth', { // Авторизация
-            login: userdata.login,
-            password: {
-                password: userdata.password,
-                type: "plain"
-            },
-            auth_id: auth.name,
-            getSession: false,
-            authType: "API",
-            initProxy: false
-        }, (res) => {
-            console.log(JSON.stringify(res));
-            api.close(); // Закрытие соединения
-        }, (error) => {
-            console.log(JSON.stringify(error));
-        });
+        console.log(auth.list);
+        api.close(); // Закрытие соединения
     }, (error) => {
-        console.log(JSON.stringify(error));
+        console.log(error);
+        api.close();
     })
-}
-// Подключение к сокету лаунчсервера
-api.connect(wsUrl);
+})
+.catch(console.error);
+
+// или
+
+(async () => {
+    try {
+        await api.connect(wsUrl);
+        api.sendRequest('getAvailabilityAuth', {}, (auth) => {
+            console.log(auth.list);
+            api.close();
+        }, (error) => {
+            console.error(error);
+            api.close();
+        })
+    } catch (error) {
+        console.error(error);
+    }
+})();
 ```
 
 Более подробные примеры использования можно найти [здесь](https://github.com/JoCat/gravit-api/tree/master/example)

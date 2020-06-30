@@ -19,11 +19,22 @@ const log = {
 // Api usage example
 const api = new GravitApi();
 api.onOpen = () => {
+    log.append('Соединение установлено');
+}
+api.onClose = (e) => {
+    if (e.wasClean) return log.append('Соединение закрыто');
+    if (e.code === 1006) log.append('Разрыв соединения');
+}
+api.onError = () => {
+    log.append('Ошибка при подключеннии!');
+}
+
+api.connect(wsUrl)
+.then(() => {
     api.sendRequest('getAvailabilityAuth', {}, (auth) => {
-        log.append('Соединение установлено');
         log.appendData(auth);
         auth = auth.list.pop();
-        log.append(`Выбран первый профиль авторизации: ${auth.name}`);
+        log.append(`Выбран первый профиль авторизации: ${auth.displayName}`);
         api.sendRequest('auth', {
             login: userdata.login,
             password: {
@@ -43,12 +54,5 @@ api.onOpen = () => {
     }, (error) => {
         log.appendData(error);
     })
-}
-api.onClose = (e) => {
-    if (e.wasClean) return log.append('Соединение закрыто');
-    if (e.code === 1006) log.append('Разрыв соединения');
-}
-api.onError = () => {
-    log.append('Ошибка при подключеннии!');
-}
-api.connect(wsUrl);
+})
+.catch(console.error);
