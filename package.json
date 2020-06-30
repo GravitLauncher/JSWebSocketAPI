@@ -1,6 +1,6 @@
 {
   "name": "gravit-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JS API implementation for GravitLauncher",
   "main": "./src/index.js",
   "browser": "./dist/gravit-api.js",

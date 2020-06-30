@@ -24,9 +24,9 @@ module.exports = class GravitApi {
         obj.type = type;
         obj.requestUUID = this.genRandUUIDv4();
         this.requestMap.set(obj.requestUUID, event => {
-            if (event.type == "error" || event.type == "exception")
+            if (event.type == "error" || event.type == "exception") {
                 if (errorCallback != undefined) errorCallback(event);
-            else callback(event);
+            } else callback(event);
         });
         this.socket.send(JSON.stringify(obj));
     }
