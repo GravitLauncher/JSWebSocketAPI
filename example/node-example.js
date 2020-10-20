@@ -11,11 +11,11 @@ const userdata = {
 const api = new GravitApi();
 api.connect(wsUrl)
 .then(() => {
-    api.sendRequest('getAvailabilityAuth', {}, (auth) => {
+    api.send('getAvailabilityAuth').then(auth => {
         console.log(auth.list);
         auth = auth.list.pop();
         console.log(`Выбран первый профиль авторизации: ${auth.displayName}`);
-        api.sendRequest('auth', {
+        api.send('auth', {
             login: userdata.login,
             password: {
                 password: userdata.password,
@@ -25,14 +25,9 @@ api.connect(wsUrl)
             getSession: false,
             authType: "API",
             initProxy: false
-        }, (res) => {
+        }).then(res => {
             console.log(res);
             api.close();
-        }, (error) => {
-            console.log(error);
-        });
-    }, (error) => {
-        console.log(error);
-    })
-})
-.catch(console.error);
+        }).catch(console.error);
+    }).catch(console.error);
+}).catch(console.error);

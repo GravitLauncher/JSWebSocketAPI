@@ -31,11 +31,11 @@ api.onError = () => {
 
 api.connect(wsUrl)
 .then(() => {
-    api.sendRequest('getAvailabilityAuth', {}, (auth) => {
+    api.send('getAvailabilityAuth').then(auth => {
         log.appendData(auth);
         auth = auth.list.pop();
         log.append(`Выбран первый профиль авторизации: ${auth.displayName}`);
-        api.sendRequest('auth', {
+        api.send('auth', {
             login: userdata.login,
             password: {
                 password: userdata.password,
@@ -45,14 +45,9 @@ api.connect(wsUrl)
             getSession: false,
             authType: "API",
             initProxy: false
-        }, (res) => {
+        }).then(res => {
             log.appendData(res);
             api.close();
-        }, (error) => {
-            log.appendData(error);
-        });
-    }, (error) => {
-        log.appendData(error);
-    })
-})
-.catch(console.error);
+        }).catch(error => log.appendData(error));
+    }).catch(error => log.appendData(error));
+}).catch(console.error);

@@ -6,16 +6,21 @@ module.exports = class GravitApi {
         this.requestMap = new Map();
     }
 
+    /**
+     * Connect to websocket
+     * @param {string} url
+     * @return {Promise<GravitApi | Error>}
+     */
     connect(url) {
         return new Promise((resolve, reject) => {
             this.socket = new WebSocket(url);
             this.socket.onopen = () => {
-                resolve(this);
                 this.onOpen();
+                resolve(this);
             };
             this.socket.onerror = (err) => {
-                reject(err);
                 this.onError();
+                reject(err);
             };
             this.socket.onclose = this.onClose;
             this.socket.onmessage = this.onMessage;
@@ -23,48 +28,53 @@ module.exports = class GravitApi {
         });
     }
 
+    /**
+     * Close websocket connection
+     */
     close() {
         this.socket.close();
     }
 
-    hasConnected() {
-        if (!this.socket) return false;
-        return this.socket.readyState === this.socket.OPEN;
+    /**
+     * Send request for websocket
+     * @param {string} type request type
+     * @param {object} obj request data
+     * @return {Promise<object>} response data
+     */
+    send(type, obj = {}) {
+        return new Promise((resolve, reject) => {
+            if (typeof type !== "string" || type === '')
+                reject({type: "error", error: "Invalid request type"});
+            obj.type = type;
+            obj.requestUUID = this.getUUIDv4();
+
+            this.requestMap.set(obj.requestUUID, data => {
+                if (["error", "exception"].includes(data.type)) reject(data);
+                else resolve(data);
+            });
+            this.socket.send(JSON.stringify(obj));
+        })
     }
 
-    sendRequest(type, obj, callback, errorCallback) {
-        if (!this.checkValidRequestType(type)) return console.error('Не валидный type');
-        obj.type = type;
-        obj.requestUUID = this.genRandUUIDv4();
-        this.requestMap.set(obj.requestUUID, event => {
-            if (event.type == "error" || event.type == "exception") {
-                if (errorCallback != undefined) errorCallback(event);
-            } else callback(event);
-        });
-        this.socket.send(JSON.stringify(obj));
-    }
-
-    genRandUUIDv4() {
+    /**
+     * @return {string} uuid v4 (random)
+     */
+    getUUIDv4() {
         return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
             (c ^ getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
     }
 
-    checkValidRequestType(type) {
-        if (type == '' || type == undefined) return false;
-        return true;
-    }
-
     /* Events */
     onOpen() {
-        console.log('Соединение установлено');
+        console.log('Connection established');
     }
 
     onClose(event) {
-        if (event.wasClean) return console.log('Соединение закрыто');
-        if (event.code === 1006) console.error('Разрыв соединения');
+        if (event.wasClean) return console.log('Connection closed');
+        if (event.code === 1006) console.error('Connection break');
         else {
-            console.error('Неизвестная ошибка');
+            console.error('Unknown error');
             console.dir(event);
         }
     }
@@ -76,12 +86,15 @@ module.exports = class GravitApi {
             requestMap.get(obj.requestUUID)(obj);
             requestMap.delete(obj.requestUUID);
         } else {
-            if (obj.type == "error") console.error(obj.error);
-            else console.dir(obj);
+            if (obj.type === "error") console.error(obj.error);
+            else {
+                console.error('Unknown message');
+                console.dir(event);
+            }
         }
     }
 
     onError() {
-        console.error('Ошибка при подключеннии!');
+        console.error('Connection error');
     }
 }
