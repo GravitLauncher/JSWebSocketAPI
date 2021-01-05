@@ -34,10 +34,6 @@ const GravitApi = require('gravit-api');
 
 // Данные для запроса
 const wsUrl = 'ws://localhost:9274/api';
-const userdata = {
-    login: 'test',
-    password: 'test'
-};
 
 // Инициализация класса API
 const api = new GravitApi();
