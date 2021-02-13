@@ -3,6 +3,7 @@
 [![GitHub license](https://img.shields.io/github/license/JoCat/gravit-api?style=flat-square)](https://github.com/JoCat/gravit-api/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/JoCat/gravit-api?style=flat-square)](https://github.com/JoCat/gravit-api/issues)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJoCat%2Fgravit-api.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FJoCat%2Fgravit-api?ref=badge_shield)
 
 Реализация JS API для [GravitLauncher](https://github.com/GravitLauncher/Launcher)
 
@@ -86,3 +87,7 @@ api.connect(wsUrl) // Подключение к сокету лаунчсерв�
 * `onClose()` - обработчик эвента [onclose](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/onclose)
 * `onMessage()` - обработчик эвента [onmessage](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/onmessage)
 * `onError()` - обработчик эвента [onerror](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/onerror)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJoCat%2Fgravit-api.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJoCat%2Fgravit-api?ref=badge_large)
